@@ -9,32 +9,39 @@ public class InvoiceApp {
 
         while (!choice.equalsIgnoreCase("n")) {
             // get the input from the user
-            System.out.print("Enter customer type (r/c): ");
+            System.out.print("Enter customer type (r/c/t): ");
             String customerType = sc.nextLine();
             
             System.out.print("Enter subtotal:   ");
             double subtotal = Double.parseDouble(sc.nextLine());
 
             // get the discount percent
-            double discountPercent = switch(customerType) {
-                case "r", "R" -> {
-                    if (subtotal >= 250) {
-                        yield .2;
-                    } else if (subtotal >= 100) {
-                        yield .1;
+            double discountPercent = .1;
+                if (customerType.equals("r") || customerType.equals("R")) {
+                    if (subtotal >= 500) {
+                        discountPercent = .3;
+                    } else if (subtotal >= 250 && subtotal < 500) {
+                        discountPercent = .25;
+                        } else if (subtotal >= 100) {
+                            discountPercent = .1;
                     } else {  
-                        yield 0.0;
+                        discountPercent = 0.0;
                     } 
                 }
-                case "c", "C" -> {
+                if (customerType.equals("c") || customerType.equals("C")) {
                     if (subtotal >= 250) {
-                        yield .3;
+                        discountPercent = .2;
                     } else {
-                        yield .2;
+                        discountPercent = .2;
                     }
                 }
-                default -> .1;
-            };
+                if (customerType.equals("t") || customerType.equals("T")) {
+                    if (subtotal < 500) {
+                        discountPercent = .4;
+                    } else {
+                        discountPercent = .5;
+                    }
+                }
 
             // calculate the discount amount and round to 2 decimals
             double discountAmount = subtotal * discountPercent;
